@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<table class="table table-bordered table-striped">
+	<thead>
+		<tr>
+			<th class="span3">
+				Username
+			</th>
+			<th class="span4">
+				Email
+			</th>
+			<th class="span4">
+				Register Time
+			</th>
+			<th class="span1">
+				ACTION
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+	{% for user in users %}
+		<tr>
+			<td>
+				{{ user.username }}
+			</td>
+			<td>
+				{{ user.email }}
+			</td>
+			<td>
+				{{ user.reg_time }}
+			</td>
+			<td>
+				<a href="{{ url_for('profile', username=user.username) }}" class="view-link">Edit</a>
+				<span> </span>
+				<a href="{{ url_for('del_user', id=user.id) }}" class="view-link">Delete</a>
+			</td>
+		</tr>
+	{% endfor %}
+	</tbody>
+</table>
+{% endblock %}

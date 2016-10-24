@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<table class="table table-bordered table-striped">
+	<thead>
+		<tr>
+			<th class="span1">
+				ID
+			</th>
+			<th>
+				Hobby
+			</th>
+			<th class="span1">
+				ACTION
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+	{% for hobby in hobbies %}
+		<tr>
+			<td>
+				{{ hobby.id }}
+			</td>
+			<td>
+				{{ hobby.hobby }}
+			</td>
+			<td>
+				<a href="{{ url_for('edit_hobby', id=hobby.id) }}" class="view-link">Edit</a>
+				<span> </span>
+				<a href="{{ url_for('del_hobby', id=hobby.id) }}" class="view-link">Delete</a>
+			</td>
+		</tr>
+	{% endfor %}
+	</tbody>
+</table>
+{% endblock %}
