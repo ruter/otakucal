@@ -69,6 +69,18 @@ def hbentry():
 	pass
 
 
+@app.route('/edit_entry/<int:id>', methods=['GET', 'POST'])
+@login_required
+def edit_entry(id):
+	pass
+
+
+@app.route('/del_entry/<int:id>')
+@login_required
+def del_entry(id):
+	pass
+
+
 @app.route('/profile/<username>', methods=['GET', 'POST'])
 @login_required
 def profile(username):
