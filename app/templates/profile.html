@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>
+	Edit Profile
+</h1>
+<form id="edit-profile" class="form-horizontal container-fluid">
+	<fieldset>
+		<legend>Profile</legend>
+		<div class="control-group">
+			<label class="control-label" for="username">Username</label>
+			<div class="controls">
+				{{ form.username(class_="input-xxlarge", disabled_="disabled") }}
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="email">Email</label>
+			<div class="controls">
+				{{ form.email(class_="input-xxlarge") }}
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="password">Password</label>
+			<div class="controls">
+				{{ form.password(class_="input-xxlarge") }}
+			</div>
+		</div>				
+		<div class="control-group">
+			<label class="control-label">Register Time</label>
+			<div class="control-label">
+				{{ reg_time }}
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">Last Login</label>
+			<div class="control-label">
+				{{ last_login }}
+			</div>
+		</div>			
+		<div class="form-actions">
+			<button type="submit" class="btn btn-primary">Save</button>
+		</div>
+	</fieldset>
+</form>
+{% endblock %}

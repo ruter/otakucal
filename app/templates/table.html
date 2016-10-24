@@ -1,0 +1,42 @@
+<table class="table table-bordered table-striped">
+	<thead>
+		<tr>
+			<th>
+				Project
+			</th>
+			<th>
+				Client
+			</th>
+			<th>
+				Type
+			</th>
+			<th>
+				Date
+			</th>
+			<th>
+				View
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+	{% for entry in entries %}
+		<tr>
+			<td>
+				Nike.com Redesign
+			</td>
+			<td>
+				Monsters Inc
+			</td>
+			<td>
+				New Task
+			</td>
+			<td>
+				4 days ago
+			</td>
+			<td>
+				<a href="#" class="view-link">View</a>
+			</td>
+		</tr>
+	{% endfor %}
+	</tbody>
+</table>

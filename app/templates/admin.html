@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="hero-unit">
+	<h1>
+		Hello, {{ g.user.username }}!
+	</h1>
+	<p>
+		You last logged in at: {{ g.user.last_login }}
+	</p>
+</div>
+
+<div class="well summary">
+	<ul>
+		<li>
+			<a href="{{ url_for('user') }}"><span class="count">{{ user_num }}</span> Users</a>
+		</li>
+		<li>
+			<a href="{{ url_for('hobby') }}"><span class="count">{{ hobby_num }}</span> Hobbies</a>
+		</li>
+		<li>
+			<a href="{{ url_for('entry') }}"><span class="count">{{ entry_num }}</span> Entries</a>
+		</li>
+		<li class="last">
+			<a href="{{ url_for('hbentry') }}"><span class="count">{{ hbentry_num }}</span> Hobby Entries</a>
+		</li>
+	</ul>
+</div>
+
+{% include "table.html" %}
+
+<ul class="pager">
+	<li class="next">
+		<a href="{{ url_for('entry') }}">More &rarr;</a>
+	</li>
+</ul>
+{% endblock %}
