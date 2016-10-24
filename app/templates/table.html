@@ -1,20 +1,17 @@
 <table class="table table-bordered table-striped">
 	<thead>
 		<tr>
-			<th>
-				Project
+			<th class="span1">
+				ID
 			</th>
-			<th>
-				Client
+			<th class="span5">
+				GOOD
 			</th>
-			<th>
-				Type
+			<th class="span5">
+				BAD
 			</th>
-			<th>
-				Date
-			</th>
-			<th>
-				View
+			<th class="span1">
+				ACTION
 			</th>
 		</tr>
 	</thead>
@@ -22,19 +19,18 @@
 	{% for entry in entries %}
 		<tr>
 			<td>
-				Nike.com Redesign
+				{{ entry.id }}
 			</td>
 			<td>
-				Monsters Inc
+				{{ entry.good }}
 			</td>
 			<td>
-				New Task
+				{{ entry.bad }}
 			</td>
 			<td>
-				4 days ago
-			</td>
-			<td>
-				<a href="#" class="view-link">View</a>
+				<a href="{{ url_for('edit_entry', id=entry.id) }}" class="view-link">Edit</a>
+				<span> </span>
+				<a href="{{ url_for('del_entry', id=entry.id) }}" class="view-link">Delete</a>
 			</td>
 		</tr>
 	{% endfor %}
