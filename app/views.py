@@ -48,12 +48,24 @@ def admin():
 @app.route('/user')
 @login_required
 def user():
-	pass
+	users = User.query.all()
+	return render_template('user.html', title='Users', users=users)
 
 
 @app.route('/hobby')
 @login_required
 def hobby():
+	hobbies = Hobby.query.all()
+	return render_template('hobby.html', title='Hobbies', hobbies=hobbies)
+
+@app.route('/edit_hobby/<int:id>')
+@login_required
+def edit_hobby(id):
+	pass
+
+@app.route('/del_hobby/<int:id>')
+@login_required
+def del_hobby(id):
 	pass
 
 
@@ -62,22 +74,20 @@ def hobby():
 def entry():
 	pass
 
-
-@app.route('/hbentry')
-@login_required
-def hbentry():
-	pass
-
-
 @app.route('/edit_entry/<int:id>', methods=['GET', 'POST'])
 @login_required
 def edit_entry(id):
 	pass
 
-
 @app.route('/del_entry/<int:id>')
 @login_required
 def del_entry(id):
+	pass
+
+
+@app.route('/hbentry')
+@login_required
+def hbentry():
 	pass
 
 
@@ -99,6 +109,12 @@ def profile(username):
 							reg_time=user.reg_time,
 							last_login=user.last_login,
 							form=form)
+
+
+@app.route('/del_user/<int:id>')
+@login_required
+def del_user(id):
+	pass
 
 
 @app.route('/register')
