@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<table class="table table-bordered table-striped">
+	<thead>
+		<tr>
+			<th class="span1">
+				ID
+			</th>
+			<th>
+				HOBBY
+			</th>
+			<th>
+				GOOD
+			</th>
+			<th>
+				BAD
+			</th>
+			<th class="span1">
+				ACTION
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+	{% for h in hbentries %}
+		<tr>
+			<td>
+				{{ h.id }}
+			</td>
+			<td>
+				{{ h.hobby.hobby }}
+			</td>
+			<td>
+				{{ h.good }}
+			</td>
+			<td>
+				{{ h.bad }}
+			</td>
+			<td>
+				<a href="{{ url_for('edit_hbentry', id=h.id) }}" class="view-link">Edit</a>
+				<span> </span>
+				<a href="{{ url_for('del_hbentry', id=h.id) }}" class="view-link">Delete</a>
+			</td>
+		</tr>
+	{% endfor %}
+	</tbody>
+</table>
+<a class="toggle-link" href="#new-project"><i class="icon-plus"></i> New HBEntry</a>
+<form id="new-project" class="form-horizontal hidden">
+	<fieldset>
+		<legend>New HBEntry</legend>
+		<div class="control-group">
+			<label class="control-label" for="good">Good</label>
+			<div class="controls">
+				{{ form.good(class_="input-xlarge") }}
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="bad">Bad</label>
+			<div class="controls">
+				{{ form.bad(class_="input-xlarge") }}
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="select01">Client</label>
+			<div class="controls">
+				{{ form.hobby_id }}
+			</div>
+		</div>
+		<div class="form-actions">
+			<button type="submit" class="btn btn-primary">Create</button> <button class="btn">Cancel</button>
+		</div>
+	</fieldset>
+</form>
+{% endblock %}
