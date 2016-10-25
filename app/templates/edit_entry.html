@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>
+	Edit Entry
+</h1>
+<form id="edit-entry" class="form-horizontal container-fluid">
+	<fieldset>
+		<legend>Entry</legend>
+		<div class="control-group">
+			<label class="control-label" for="good">Good</label>
+			<div class="controls">
+				{{ form.good(class_="input-xxlarge") }}
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="bad">Bad</label>
+			<div class="controls">
+				{{ form.bad(class_="input-xxlarge") }}
+			</div>
+		</div>	
+		<div class="form-actions">
+			<button type="submit" class="btn btn-primary">Save</button>
+		</div>
+	</fieldset>
+</form>
+{% endblock %}
