@@ -3,7 +3,7 @@
 from flask import render_template, redirect, url_for, g
 from flask_login import login_user, logout_user, current_user, login_required
 from . import app, db, login_manager
-from .forms import LoginForm, RegisterForm
+from .forms import LoginForm, RegisterForm, HobbyForm
 from .models import User, Entry, Hobby, HBEntry
 from .security import ts
 
@@ -58,15 +58,27 @@ def hobby():
 	hobbies = Hobby.query.all()
 	return render_template('hobby.html', title='Hobbies', hobbies=hobbies)
 
-@app.route('/edit_hobby/<int:id>')
+@app.route('/edit_hobby/<int:id>', methods=['GET', 'POST'])
 @login_required
 def edit_hobby(id):
-	pass
+	form = HobbyForm()
+	hobby = Hobby.query.filter_by(id=id).first()
+	if form.validate_on_submit():
+		hobby.hobby = form.hobby.data
+		db.session.add(hobby)
+		db.session.commit()
+		return redirect(url_for('hobby'))
+	form.hobby.data = hobby.hobby
+	return render_template('edit_hobby.html', title='Edit Hobby', form=form)
 
 @app.route('/del_hobby/<int:id>')
 @login_required
 def del_hobby(id):
-	pass
+	try:
+		hobby = Hobby.query.filter_by(id=id).first()
+		db.session.delete(hobby)
+		db.session.commit()
+		return redirect(url_for('hobby'))
 
 
 @app.route('/entry')
@@ -82,7 +94,11 @@ def edit_entry(id):
 @app.route('/del_entry/<int:id>')
 @login_required
 def del_entry(id):
-	pass
+	try:
+		entry = Entry.query.filter_by(id=id).first()
+		db.session.delete(entry)
+		db.session.commit()
+		return redirect(url_for('entry'))
 
 
 @app.route('/hbentry')
