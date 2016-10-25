@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>
+	Edit Hobby
+</h1>
+<form id="edit-hobby" class="form-horizontal container-fluid">
+	<fieldset>
+		<legend>Hobby</legend>
+		<div class="control-group">
+			<label class="control-label" for="hobby">Hobby</label>
+			<div class="controls">
+				{{ form.hobby(class_="input-xxlarge") }}
+			</div>
+		</div>		
+		<div class="form-actions">
+			<button type="submit" class="btn btn-primary">Save</button>
+		</div>
+	</fieldset>
+</form>
+{% endblock %}
