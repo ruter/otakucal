@@ -14,3 +14,7 @@ class RegisterForm(FlaskForm):
 	username = StringField('Username', validators=[DataRequired()])
 	email = StringField('Email', validators=[DataRequired(), Email()])
 	password = PasswordField('Password', validators=[DataRequired()])
+
+
+class HobbyForm(FlaskForm):
+	hobby = StringField('Hobby', validators=[DataRequired()])
