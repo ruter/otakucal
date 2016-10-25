@@ -33,4 +33,19 @@
 	{% endfor %}
 	</tbody>
 </table>
+<a class="toggle-link" href="#new-project"><i class="icon-plus"></i> New Hobby</a>
+<form id="new-project" class="form-horizontal hidden">
+	<fieldset>
+		<legend>New Hobby</legend>
+		<div class="control-group">
+			<label class="control-label" for="hobby">Hobby</label>
+			<div class="controls">
+				{{ form.hobby(class_="input-xlarge") }}
+			</div>
+		</div>
+		<div class="form-actions">
+			<button type="submit" class="btn btn-primary">Create</button> <button class="btn">Cancel</button>
+		</div>
+	</fieldset>
+</form>
 {% endblock %}
