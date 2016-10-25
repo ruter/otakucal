@@ -18,3 +18,15 @@ class RegisterForm(FlaskForm):
 
 class HobbyForm(FlaskForm):
 	hobby = StringField('Hobby', validators=[DataRequired()])
+
+
+class EntryForm(FlaskForm):
+	good = StringField('Good')
+	bad = StringField('Bad')
+
+
+class HBEntryForm(FlaskForm):
+	good = StringField('Good')
+	bad = StringField('Bad')
+	hobby_id = SelectField('Hobby', coerce=int)
+		
