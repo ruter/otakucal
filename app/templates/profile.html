@@ -4,7 +4,8 @@
 <h1>
 	Edit Profile
 </h1>
-<form id="edit-profile" class="form-horizontal container-fluid">
+<form id="edit-profile" class="form-horizontal container-fluid" method="post">
+	{{ form.csrf_token }}
 	<fieldset>
 		<legend>Profile</legend>
 		<div class="control-group">

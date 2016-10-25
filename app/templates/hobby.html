@@ -10,7 +10,7 @@
 			<th>
 				Hobby
 			</th>
-			<th class="span1">
+			<th class="span2">
 				ACTION
 			</th>
 		</tr>
@@ -34,7 +34,8 @@
 	</tbody>
 </table>
 <a class="toggle-link" href="#new-project"><i class="icon-plus"></i> New Hobby</a>
-<form id="new-project" class="form-horizontal hidden">
+<form id="new-project" class="form-horizontal hidden" method="post">
+	{{ form.csrf_token }}
 	<fieldset>
 		<legend>New Hobby</legend>
 		<div class="control-group">

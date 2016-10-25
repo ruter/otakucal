@@ -4,7 +4,8 @@
 <h1>
 	Edit Hobby
 </h1>
-<form id="edit-hobby" class="form-horizontal container-fluid">
+<form id="edit-hobby" class="form-horizontal container-fluid" method="post">
+	{{ form.csrf_token }}
 	<fieldset>
 		<legend>Hobby</legend>
 		<div class="control-group">

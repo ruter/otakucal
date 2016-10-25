@@ -21,7 +21,8 @@
 
 	<body>
 		<div id="container">
-			<form action="welcome.html">
+			<form method="post">
+				{{ form.csrf_token }}
 				<div class="login">LOGIN</div>
 				<div class="username-text">Email:</div>
 				<div class="password-text">Password:</div>

@@ -5,7 +5,8 @@
 {% include "table.html" %}
 
 <a class="toggle-link" href="#new-project"><i class="icon-plus"></i> New Entry</a>
-<form id="new-project" class="form-horizontal hidden">
+<form id="new-project" class="form-horizontal hidden" method="post">
+	{{ form.csrf_token }}
 	<fieldset>
 		<legend>New Entry</legend>
 		<div class="control-group">

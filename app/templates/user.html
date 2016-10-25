@@ -4,7 +4,7 @@
 <table class="table table-bordered table-striped">
 	<thead>
 		<tr>
-			<th class="span3">
+			<th class="span2">
 				Username
 			</th>
 			<th class="span4">
@@ -13,7 +13,7 @@
 			<th class="span4">
 				Register Time
 			</th>
-			<th class="span1">
+			<th class="span2">
 				ACTION
 			</th>
 		</tr>
@@ -40,7 +40,8 @@
 	</tbody>
 </table>
 <a class="toggle-link" href="#new-project"><i class="icon-plus"></i> New User</a>
-<form id="new-project" class="form-horizontal hidden">
+<form id="new-project" class="form-horizontal hidden" method="post">
+	{{ form.csrf_token }}
 	<fieldset>
 		<legend>New User</legend>
 		<div class="control-group">

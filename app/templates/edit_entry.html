@@ -4,7 +4,8 @@
 <h1>
 	Edit Entry
 </h1>
-<form id="edit-entry" class="form-horizontal container-fluid">
+<form id="edit-entry" class="form-horizontal container-fluid" method="post">
+	{{ form.csrf_token }}
 	<fieldset>
 		<legend>Entry</legend>
 		<div class="control-group">

@@ -16,7 +16,7 @@
 			<th>
 				BAD
 			</th>
-			<th class="span1">
+			<th class="span2">
 				ACTION
 			</th>
 		</tr>
@@ -46,7 +46,8 @@
 	</tbody>
 </table>
 <a class="toggle-link" href="#new-project"><i class="icon-plus"></i> New HBEntry</a>
-<form id="new-project" class="form-horizontal hidden">
+<form id="new-project" class="form-horizontal hidden" method="post">
+	{{ form.csrf_token }}
 	<fieldset>
 		<legend>New HBEntry</legend>
 		<div class="control-group">
@@ -62,7 +63,7 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label" for="select01">Client</label>
+			<label class="control-label" for="hobby_id">Hobby</label>
 			<div class="controls">
 				{{ form.hobby_id }}
 			</div>
