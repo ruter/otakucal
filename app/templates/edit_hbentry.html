@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>
+	Edit Hobby Entry
+</h1>
+<form id="edit-hbentry" class="form-horizontal container-fluid" method="post">
+	{{ form.csrf_token }}
+	<fieldset>
+		<legend>Hobby Entry</legend>
+		<div class="control-group">
+			<label class="control-label" for="good">Good</label>
+			<div class="controls">
+				{{ form.good(class_="input-xxlarge") }}
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="bad">Bad</label>
+			<div class="controls">
+				{{ form.bad(class_="input-xxlarge") }}
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="hobby_id">Hobby</label>
+			<div class="controls">
+				{{ form.hobby_id }}
+			</div>
+		</div>
+		<div class="form-actions">
+			<button type="submit" class="btn btn-primary">Save</button>
+		</div>
+	</fieldset>
+</form>
+{% endblock %}
