@@ -27,22 +27,25 @@ def not_found_error(error):
 def internal_error(error):
 	return render_template('500.html'), 500
 
-
+@app.route('/')
 @app.route('/admin')
 @login_required
 def admin():
-	entries = Entry.query.all().order_by(Entry.id.desc()).paginate(1, 10, False).items
-	user_num = User.query.count()
-	hobby_num = Hobby.query.count()
-	entry_num = Entry.query.count()
-	hbentry_num = HBEntry.query.count()
-	return render_template('admin.html',
-							title='Dashboard',
-							user_num=user_num,
-							hobby_num=hobby_num,
-							entry_num=entry_num,
-							hbentry_num=hbentry_num,
-							entries=entries)
+	try:
+		entries = Entry.query.order_by(Entry.id.desc()).paginate(1, 10, False).items
+		user_num = User.query.count()
+		hobby_num = Hobby.query.count()
+		entry_num = Entry.query.count()
+		hbentry_num = HBEntry.query.count()
+		return render_template('admin.html',
+								title='Dashboard',
+								user_num=user_num,
+								hobby_num=hobby_num,
+								entry_num=entry_num,
+								hbentry_num=hbentry_num,
+								entries=entries)
+	except:
+		return render_template('admin.html')
 
 
 @app.route('/user', methods=['GET', 'POST'])
@@ -50,13 +53,14 @@ def admin():
 def user():
 	form = RegisterForm()
 	if form.validate_on_submit():
-		user = User(
-        	username = form.username.data,
-        	email = form.email.data.lower(),
-        	password = form.password.data)
-        db.session.add(user)
-        db.session.commit()
-        return redirect(url_for('user'))
+		email = form.email.data.lower()
+		u = User(
+			username=form.username.data, 
+			email=email, 
+			password=form.password.data)
+		db.session.add(u)
+		db.session.commit()
+		return redirect(url_for('user'))
 	users = User.query.all()
 	return render_template('user.html', title='Users', form=form, users=users)
 
@@ -70,7 +74,7 @@ def hobby():
 		db.session.add(hobby)
 		db.session.commit()
 		return redirect(url_for('hobby'))
-	hobbies = Hobby.query.all().order_by(Hobby.id.desc())
+	hobbies = Hobby.query.order_by(Hobby.id.desc())
 	return render_template('hobby.html', title='Hobbies', form=form, hobbies=hobbies)
 
 @app.route('/edit_hobby/<int:id>', methods=['GET', 'POST'])
@@ -94,6 +98,8 @@ def del_hobby(id):
 		db.session.delete(hobby)
 		db.session.commit()
 		return redirect(url_for('hobby'))
+	except:
+		return redirect(url_for('hobby'))
 
 
 @app.route('/entry', methods=['GET', 'POST'])
@@ -101,14 +107,11 @@ def del_hobby(id):
 def entry():
 	form = EntryForm()
 	if form.validate_on_submit():
-		entry = Entry(
-			good=form.good.data,
-			bad=form.bad.data
-			)
+		entry = Entry(good=form.good.data, bad=form.bad.data)
 		db.session.add(entry)
 		db.session.commit()
 		return redirect(url_for('entry'))
-	entries = Entry.query.all().order_by(Entry.id.desc())
+	entries = Entry.query.order_by(Entry.id.desc())
 	return render_template('entry.html', title='Entries', form=form, entries=entries)
 
 @app.route('/edit_entry/<int:id>', methods=['GET', 'POST'])
@@ -134,29 +137,44 @@ def del_entry(id):
 		db.session.delete(entry)
 		db.session.commit()
 		return redirect(url_for('entry'))
+	except:
+		return redirect(url_for('entry'))
 
 
 @app.route('/hbentry', methods=['GET', 'POST'])
 @login_required
 def hbentry():
 	form = HBEntryForm()
-    form.hobby_id.choices = [(h.id, h.hobby) for h in Hobby.query.order_by('hobby')]
-    if form.validate_on_submit():
-    	hbentry = HBEntry(
-    		hb_id=form.hobby_id.data,
-    		good=form.good.data,
-    		bad=form.bad.data)
-    	db.session.add(hbentry)
-    	db.session.commit()
-    	return redirect(url_for('hbentry'))
-    hbentries = HBEntry.query.all().order_by(HBEntry.id.desc())
-    return render_template('hbentry.html', title='Hobby Entry', form=form, hbentries=hbentries)
+	form.hobby_id.choices = [(h.id, h.hobby) for h in Hobby.query.order_by('hobby')]
+	if form.validate_on_submit():
+		hbentry = HBEntry(
+			hb_id=form.hobby_id.data,
+			good=form.good.data,
+			bad=form.bad.data)
+		db.session.add(hbentry)
+		db.session.commit()
+		return redirect(url_for('hbentry'))
+	hbentries = HBEntry.query.order_by(HBEntry.id.desc())
+	return render_template('hbentry.html', title='Hobby Entry', form=form, hbentries=hbentries)
 
 
 @app.route('/edit_hbentry/<int:id>', methods=['GET', 'POST'])
 @login_required
 def edit_hbentry(id):
-	pass
+	form = HBEntryForm()
+	form.hobby_id.choices = [(h.id, h.hobby) for h in Hobby.query.order_by('hobby')]
+	hbentry = HBEntry.query.filter_by(id=id).first()
+	form.hobby_id.choices.insert(0, (hbentry.hb_id, hbentry.hobby.hobby))
+	if form.validate_on_submit():
+		hbentry.hb_id = form.hobby_id.data
+		hbentry.good = form.good.data
+		hbentry.bad = form.bad.data
+		db.session.add(hbentry)
+		db.session.commit()
+		return redirect(url_for('hbentry'))
+	form.good.data = hbentry.good
+	form.bad.data = hbentry.bad
+	return render_template('edit_hbentry.html', title='Edit Hobby Entry', form=form)
 
 
 @app.route('/del_hbentry/<int:id>')
@@ -166,6 +184,8 @@ def del_hbentry(id):
 		hbentry = HBEntry.query.filter_by(id=id).first()
 		db.session.delete(hbentry)
 		db.session.commit()
+		return redirect(url_for('hbentry'))
+	except:
 		return redirect(url_for('hbentry'))
 
 
@@ -197,6 +217,8 @@ def del_user(id):
 		db.session.delete(user)
 		db.session.commit()
 		return redirect(url_for('user'))
+	except:
+		return redirect(url_for('user'))
 
 
 @app.route('/register')
@@ -212,6 +234,7 @@ def login():
 	if form.validate_on_submit():
 		email = form.email.data.lower()
 		user = User.query.filter_by(email=email).first()
+		print email, user
 		if user is not None and user.is_correct_password(form.password.data):
 			login_user(user, remember=form.remember_me.data)
 			return redirect(url_for('admin'))
