@@ -3,7 +3,7 @@
 from flask import render_template, redirect, url_for, g
 from flask_login import login_user, logout_user, current_user, login_required
 from . import app, db, login_manager
-from .forms import LoginForm, RegisterForm, HobbyForm
+from .forms import LoginForm, RegisterForm, HobbyForm, EntryForm, HBEntryForm
 from .models import User, Entry, Hobby, HBEntry
 from .security import ts
 
@@ -45,18 +45,33 @@ def admin():
 							entries=entries)
 
 
-@app.route('/user')
+@app.route('/user', methods=['GET', 'POST'])
 @login_required
 def user():
+	form = RegisterForm()
+	if form.validate_on_submit():
+		user = User(
+        	username = form.username.data,
+        	email = form.email.data.lower(),
+        	password = form.password.data)
+        db.session.add(user)
+        db.session.commit()
+        return redirect(url_for('user'))
 	users = User.query.all()
-	return render_template('user.html', title='Users', users=users)
+	return render_template('user.html', title='Users', form=form, users=users)
 
 
-@app.route('/hobby')
+@app.route('/hobby', methods=['GET', 'POST'])
 @login_required
 def hobby():
-	hobbies = Hobby.query.all()
-	return render_template('hobby.html', title='Hobbies', hobbies=hobbies)
+	form = HobbyForm()
+	if form.validate_on_submit():
+		hobby = Hobby(hobby=form.hobby.data)
+		db.session.add(hobby)
+		db.session.commit()
+		return redirect(url_for('hobby'))
+	hobbies = Hobby.query.all().order_by(Hobby.id.desc())
+	return render_template('hobby.html', title='Hobbies', form=form, hobbies=hobbies)
 
 @app.route('/edit_hobby/<int:id>', methods=['GET', 'POST'])
 @login_required
@@ -81,15 +96,35 @@ def del_hobby(id):
 		return redirect(url_for('hobby'))
 
 
-@app.route('/entry')
+@app.route('/entry', methods=['GET', 'POST'])
 @login_required
 def entry():
-	pass
+	form = EntryForm()
+	if form.validate_on_submit():
+		entry = Entry(
+			good=form.good.data,
+			bad=form.bad.data
+			)
+		db.session.add(entry)
+		db.session.commit()
+		return redirect(url_for('entry'))
+	entries = Entry.query.all().order_by(Entry.id.desc())
+	return render_template('entry.html', title='Entries', form=form, entries=entries)
 
 @app.route('/edit_entry/<int:id>', methods=['GET', 'POST'])
 @login_required
 def edit_entry(id):
-	pass
+	form = EntryForm()
+	entry = Entry.query.filter_by(id=id).first()
+	if form.validate_on_submit():
+		entry.good = form.good.data
+		entry.bad = form.bad.data
+		db.session.add(entry)
+		db.session.commit()
+		return redirect(url_for('entry'))
+	form.good.data = entry.good
+	form.bad.data = entry.bad
+	return render_template('edit_entry.html', title='Edit Entry', form=form)
 
 @app.route('/del_entry/<int:id>')
 @login_required
@@ -101,10 +136,37 @@ def del_entry(id):
 		return redirect(url_for('entry'))
 
 
-@app.route('/hbentry')
+@app.route('/hbentry', methods=['GET', 'POST'])
 @login_required
 def hbentry():
+	form = HBEntryForm()
+    form.hobby_id.choices = [(h.id, h.hobby) for h in Hobby.query.order_by('hobby')]
+    if form.validate_on_submit():
+    	hbentry = HBEntry(
+    		hb_id=form.hobby_id.data,
+    		good=form.good.data,
+    		bad=form.bad.data)
+    	db.session.add(hbentry)
+    	db.session.commit()
+    	return redirect(url_for('hbentry'))
+    hbentries = HBEntry.query.all().order_by(HBEntry.id.desc())
+    return render_template('hbentry.html', title='Hobby Entry', form=form, hbentries=hbentries)
+
+
+@app.route('/edit_hbentry/<int:id>', methods=['GET', 'POST'])
+@login_required
+def edit_hbentry(id):
 	pass
+
+
+@app.route('/del_hbentry/<int:id>')
+@login_required
+def del_hbentry(id):
+	try:
+		hbentry = HBEntry.query.filter_by(id=id).first()
+		db.session.delete(hbentry)
+		db.session.commit()
+		return redirect(url_for('hbentry'))
 
 
 @app.route('/profile/<username>', methods=['GET', 'POST'])
@@ -130,7 +192,11 @@ def profile(username):
 @app.route('/del_user/<int:id>')
 @login_required
 def del_user(id):
-	pass
+	try:
+		user = User.query.filter_by(id=id).first()
+		db.session.delete(user)
+		db.session.commit()
+		return redirect(url_for('user'))
 
 
 @app.route('/register')
