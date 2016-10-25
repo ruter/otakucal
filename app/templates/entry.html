@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% include "table.html" %}
+
+<a class="toggle-link" href="#new-project"><i class="icon-plus"></i> New Entry</a>
+<form id="new-project" class="form-horizontal hidden">
+	<fieldset>
+		<legend>New Entry</legend>
+		<div class="control-group">
+			<label class="control-label" for="good">Good</label>
+			<div class="controls">
+				{{ form.good(class_="input-xlarge") }}
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="bad">Bad</label>
+			<div class="controls">
+				{{ form.bad(class_="input-xlarge") }}
+			</div>
+		</div>
+		<div class="form-actions">
+			<button type="submit" class="btn btn-primary">Create</button> <button class="btn">Cancel</button>
+		</div>
+	</fieldset>
+</form>
+{% endblock %}
