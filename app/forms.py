@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, BooleanField, PasswordField
+from wtforms import StringField, BooleanField, PasswordField, SelectField
 from wtforms.validators import DataRequired, Email
 
 class LoginForm(FlaskForm):
