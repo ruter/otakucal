@@ -27,7 +27,6 @@ def get_entry_list():
 
 class Entries(Resource):
 	def get(self):
-		print get_entry_list()
 		return {'result': get_entry_list()}
 
 
