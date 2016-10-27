@@ -4,30 +4,31 @@ from . import api
 from flask_restful import Resource
 from .models import User, Entry, Hobby, HBEntry
 
+from flask import json, make_response
 import random
 from datetime import datetime
 
 
-ENTRY_MAX = Entry.query.count()
 HBENTRY_MAX = HBEntry.query.count()
 
 
 def get_entry_list():
 	random.seed(datetime.utcnow())
-	entry_id_list = random.sample(range(1, ENTRY_MAX + 1), 3)
+	entry_id_list = random.sample(range(1, Entry.query.count() + 1), 3)
 	good_id = entry_id_list[:2]
 	bad_id = entry_id_list[-1]
 	entries = {}
 	good_list = Entry.query.with_entities(Entry.good).filter(Entry.id.in_(good_id)).all()
 	entries['good'] = [good.good for good in good_list]
 	entries['bad'] = Entry.query.with_entities(Entry.bad).filter_by(id=bad_id).first().bad
-	# return json.dumps(entries, ensure_ascii=False).encode('utf-8')
+	# return json.dumps(entries, ensure_ascii=False).decode('utf-8')
 	return entries
 
 
 class Entries(Resource):
 	def get(self):
-		return {'result': get_entry_list()}
+		return make_response(
+			json.dumps({'result': get_entry_list()}, ensure_ascii=False).decode('utf-8'))
 
 
 # class EntryList(Resource):
