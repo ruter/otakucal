@@ -6,6 +6,7 @@ from . import app, db, login_manager
 from .forms import LoginForm, RegisterForm, HobbyForm, EntryForm, HBEntryForm
 from .models import User, Entry, Hobby, HBEntry
 from .security import ts
+from app import apis
 
 from datetime import datetime, timedelta
 import random

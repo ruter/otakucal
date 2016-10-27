@@ -4,6 +4,7 @@ from flask import Flask
 from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flask_restful import Api
 import sys
 
 # Fix messy code
@@ -21,6 +22,8 @@ db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
+
+api = Api(app)
 
 
 from app import views, models
