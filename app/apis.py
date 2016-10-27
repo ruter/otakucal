@@ -4,7 +4,6 @@ from . import api
 from flask_restful import Resource
 from .models import User, Entry, Hobby, HBEntry
 
-import json
 import random
 from datetime import datetime
 
@@ -22,7 +21,8 @@ def get_entry_list():
 	good_list = Entry.query.with_entities(Entry.good).filter(Entry.id.in_(good_id)).all()
 	entries['good'] = [good.good for good in good_list]
 	entries['bad'] = Entry.query.with_entities(Entry.bad).filter_by(id=bad_id).first().bad
-	return json.dumps(entries, ensure_ascii=False).encode('utf-8')
+	# return json.dumps(entries, ensure_ascii=False).encode('utf-8')
+	return entries
 
 
 class Entries(Resource):
