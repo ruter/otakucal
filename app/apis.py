@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from . import api
+from . import api, app
 from flask_restful import Resource
 from .models import User, Entry, Hobby, HBEntry
 
@@ -10,6 +10,10 @@ from datetime import datetime
 
 
 HBENTRY_MAX = HBEntry.query.count()
+
+@app.errorhandler(404)
+def not_found(error):
+    return make_response(json.dumps({'error': 'Not found'}), 404)
 
 
 def get_entry_list():
@@ -35,4 +39,4 @@ class Entries(Resource):
 # 	def get(self, page=1, num=)
 		
 
-api.add_resource(Entries, '/otakucal/v1/entries', endpoint='entries')
+api.add_resource(Entries, '/otakucal/v1.0/entries', endpoint='entries')
