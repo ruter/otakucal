@@ -15,24 +15,23 @@ HBENTRY_MAX = HBEntry.query.count()
 def not_found(error):
     return make_response(json.dumps({'error': 'Not found'}), 404)
 
-
-def get_entry_list():
+def rand_result(max_num, num):
 	random.seed(datetime.utcnow())
-	entry_id_list = random.sample(range(1, Entry.query.count() + 1), 3)
-	good_id = entry_id_list[:2]
-	bad_id = entry_id_list[-1]
-	entries = {}
-	good_list = Entry.query.with_entities(Entry.good).filter(Entry.id.in_(good_id)).all()
-	entries['good'] = [good.good for good in good_list]
-	entries['bad'] = Entry.query.with_entities(Entry.bad).filter_by(id=bad_id).first().bad
-	# return json.dumps(entries, ensure_ascii=False).decode('utf-8')
-	return entries
+	rs = random.sample(range(1, max_num), num)
+	return rs
 
 
 class Entries(Resource):
 	def get(self):
+		entry_id_list = rand_result(Entry.query.count() + 1, 3)
+		good_id = entry_id_list[:2]
+		bad_id = entry_id_list[-1]
+		entries = {}
+		good_list = Entry.query.with_entities(Entry.good).filter(Entry.id.in_(good_id)).all()
+		entries['good'] = [good.good for good in good_list]
+		entries['bad'] = Entry.query.with_entities(Entry.bad).filter_by(id=bad_id).first().bad
 		return make_response(
-			json.dumps({'result': get_entry_list()}, ensure_ascii=False).decode('utf-8'))
+			json.dumps({'result': entries}, ensure_ascii=False).decode('utf-8'))
 
 
 class Hobbies(Resource):
@@ -46,6 +45,7 @@ class HBEntry(Resource):
 	def get(self):
 		parser = reqparse.RequestParser()
 		parser.add_argument('hobby', action='append')
+		parser.add_argument('lucky_val', type=bool)
 		args = parser.parse_args()
 		hobbies = args['hobby']
 		hbentries = {}
