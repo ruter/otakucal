@@ -25,8 +25,9 @@ def get_entries(rand_num, num, max_num):
 	bad_id = entry_id_list[max_num:]
 	entries = {}
 	good_list = Entry.query.with_entities(Entry.good).filter(Entry.id.in_(good_id)).all()
-	entries['good'] = [good.good for good in good_list]
-	entries['bad'] = Entry.query.with_entities(Entry.bad).filter_by(id=bad_id).first().bad
+	bad_list = Entry.query.with_entities(Entry.bad).filter(Entry.id.in_(bad_id)).all()
+	entries['good'] = [e.good for e in good_list]
+	entries['bad'] = [e.bad for e in bad_list]
 	return entries
 
 
@@ -73,11 +74,15 @@ class HBEntry(Resource):
 			else:
 				e_num = 12 - len(entry_list)
 				entry_list = random.sample(entry_list, len(entry_list))
-				good = [e.good for e in entry_list[:len(entry_list) / 2]]
-				bad = [e.bad for e in entry_list[len(entry_list) / 2:]]
-				rs = get_entries(Entry.query.count(), e_num, e_num / 2)
+				good = [e.good for e in entry_list[:len(entry_list) / 3 * 2]]
+				bad = [e.bad for e in entry_list[len(entry_list) / 3 * 2:]]
+				rs = get_entries(Entry.query.count(), e_num, e_num / 3 * 2)
 				good.extend(rs['good'])
 				bad.extend(rs['bad'])
+				if len(good) > 8:
+					good = good[:8]
+				if len(bad) > 4:
+					bad = bad[:4]
 		else:
 			rs = get_entries(Entry.query.count(), 12, 8)
 			good.extend(rs['good'])
