@@ -34,7 +34,7 @@ def get_entries(rand_num, num, max_num):
 class Entries(Resource):
 	def get(self):
 		return make_response(
-			json.dumps({'result': get_entries(Entry.query.count(), 3, 2)}, ensure_ascii=False).decode('utf-8'))
+			json.dumps({'result': get_entries(Entry.query.count(), 12, 8)}, ensure_ascii=False).decode('utf-8'))
 
 
 class Hobbies(Resource):
