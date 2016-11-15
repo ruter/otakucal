@@ -222,9 +222,23 @@ def del_user(id):
 		return redirect(url_for('user'))
 
 
-@app.route('/register')
+@app.route('/register', methods=['GET', 'POST'])
 def register():
-	pass
+	if g.user is not None and g.user.is_authenticated:
+		return redirect(url_for('admin'))
+	form = RegisterForm()
+	if form.validate_on_submit():
+		username = form.username.data
+		email = form.email.data.lower()
+		password = form.password.data
+		u = User(
+			username=username, 
+			email=email, 
+			password=password)
+		db.session.add(u)
+		db.session.commit()
+		return redirect(url_for('login'))
+	return render_template('register.html', title='Register', form=form)
 	
 
 @app.route('/login', methods=['GET', 'POST'])
